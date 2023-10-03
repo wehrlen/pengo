@@ -1,0 +1,63 @@
+{% extends "homepage/home.html" %}
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'edit/edit.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h1>Bienvenue {{user.username}}</h1>
+    <section class="forms">
+        <form method="post">
+                <h3>Modication de mot de passe</h3>
+                {% csrf_token %}
+               
+                {% for field in password_form %}
+                    <p>{{ field.label_tag }}{{ field }}</p>
+                {% endfor %}
+
+                <div class="help">
+                    <i class='bx bx-help-circle'></i>
+                    <span class="tooltip">
+                        {% for field in password_form %}
+                        {% if field.help_text %}
+                            {{ field.help_text }}
+                        {% endif %}
+                    {% endfor %}
+                    </span>
+                </div>
+            
+               
+                <button type="submit">Changer le mot de passe</button>
+                
+                {% if password_form.errors %}
+                    <div class="alert">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                        {% for field, error_list in password_form.errors.items %}
+                            {% for error in error_list %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </form>
+
+            <form method="post">
+                <h3>Modication du nom d'utilisateur</h3>
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                <button type="submit">Changer le nom d'utilisateur</button>
+            </form>
+    </section>
+    
+
+    
+    
+{% endblock %}

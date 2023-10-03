@@ -1,0 +1,17 @@
+{% extends "homepage/home.html" %}
+
+
+{% block style %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'event/event.css' %}">
+{% endblock %}
+{% block content %}
+    <h1>calendrier</h1>
+    <div id='calendar'></div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'event/event.js' %}"></script>
+{% endblock scripts %}

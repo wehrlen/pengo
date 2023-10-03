@@ -1,0 +1,237 @@
+<html>
+
+<head>
+    <title>Homepage</title>
+
+    {% load static %}
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'homepage/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    {% block style %}
+        <link rel="stylesheet" href="{% static 'tracker/card.css' %}">
+        <link rel="stylesheet" href="{% static 'homepage/info.css' %}">
+    {% endblock %}
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo-details">
+            <!--<i class='bx bxl-c-plus-plus icon'></i>-->
+            <div class="logo_name">PengoSquad</div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="Search...">
+                <span class="tooltip">Search</span>
+            </li>
+            <li>
+                <a href="{% url 'tracker:index' %}">
+                    <i class='bx bx-user'></i>
+                    <span class="links_name">Home</span>
+                </a>
+                <span class="tooltip">Home</span>
+            </li>
+            <li>
+                <a href="{% url 'homepage:user' %}">
+                    <i class='bx bxs-bar-chart-alt-2'></i>
+                    <span class="links_name">User</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-chat'></i>
+                    <span class="links_name">Messages</span>
+                </a>
+                <span class="tooltip">Messages</span>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'homepage/league.png' %}" alt="">
+                    <span class="links_name">PengoGG</span>
+                </a>
+                <span class="tooltip">PengoGG</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-folder'></i>
+                    <span class="links_name">File Manager</span>
+                </a>
+                <span class="tooltip">Files</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-cart-alt'></i>
+                    <span class="links_name">Order</span>
+                </a>
+                <span class="tooltip">Order</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-heart'></i>
+                    <span class="links_name">Saved</span>
+                </a>
+                <span class="tooltip">Saved</span>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bx-cog'></i>
+                    <span class="links_name">Setting</span>
+                </a>
+                <span class="tooltip">Setting</span>
+            </li>
+            <li class="profile">
+                <div class="profile-details">
+                    <!--<img src="profile.jpg" alt="profileImg">-->
+                    <a href="{% url 'homepage:user' %}"><div class="name_job" href="{% url 'homepage:user' %}">
+                        {% if user.is_authenticated %}
+                        <div class="name">{{ user.username }}</div>
+                        <div class="job">Web designer</div>
+                        {% endif %}
+                    </div></a>
+                </div>
+                <a href="{% url 'logout' %}" id="log_out"><i class='bx bx-log-out' id="log_out"></i></a>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+        {% block content %}
+
+            <div class="wrapper">
+                <div class="info un">
+                    <h1>{{servers}}</h1>
+                    <p>Nombre total de messages : {{messages}}</p>
+                    <p>Nombre total de channels : {{channels}}</p>
+                    <p>Nombre total de roles : {{roles}}</p>
+                    <p>Nombre total de personnes: {{members}}</p>
+    
+                </div>
+
+    
+                <div class="info graph">
+                    <h1>test</h1>
+                    <canvas id="graphiqueMessages"></canvas>  
+                </div>
+
+                <div class="info">
+                    <h1>test</h1>
+                    <canvas id="graphique2Messages"></canvas>  
+                </div>
+
+                <div class="info last">
+                    <h1 class="list">Liste des membres</h1>
+                    
+                        {% for e in test %}
+                            <div class="list_object">
+                                <img  src="{{ e.avatar_member }}" alt="" />
+                                <p>{{e.name_member}}</p>
+                            </div>
+                        {% endfor %}
+               
+    
+                </div>
+            </div>
+
+            
+
+        {% endblock %}
+    </section>
+
+    {% block scripts %}
+    
+        <script>
+            var donnees = JSON.parse("{{ data|escapejs }}");
+            var donnees_ch = JSON.parse("{{ data_channel|escapejs }}");
+            console.log(donnees_ch)                    // Préparez les données pour le graphique
+
+            
+            var labels = [];
+            var data = [];
+
+            var labels_ch = [];
+            var data_ch=[];
+            
+            for (var i = 0; i < donnees.length; i++) {
+                if (donnees[i].messages > 0){
+                    labels.push(donnees[i].nom);
+                    data.push(donnees[i].messages);
+                }
+            }
+            
+            for (var i = 0; i < donnees_ch.length; i++) {
+                if (donnees_ch[i].messages > 0){
+                    labels_ch.push(donnees_ch[i].nom);
+                    data_ch.push(donnees_ch[i].messages);
+                }
+            }
+
+
+            var ctx = document.getElementById('graphique2Messages').getContext('2d');
+            var graphique2 = new Chart(ctx, {
+                type: 'doughnut',
+                options: {
+                    layout: {
+                        padding: 4
+                    }
+                },
+                data: {
+                    labels: labels_ch,
+                    options: {
+                        responsive: true
+                    },
+                    datasets: [{
+                        data: data_ch,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            // Ajoutez plus de couleurs ici si nécessaire
+                        ],
+                        
+                        hoverOffset: 4
+                    }],
+                },
+            });
+
+            var ctx = document.getElementById('graphiqueMessages').getContext('2d');
+            var graphique = new Chart(ctx, {
+                type: 'doughnut',
+                options: {
+                    layout: {
+                        padding: 4
+                    }
+                },
+                data: {
+                    labels: labels,
+                    options: {
+                        responsive: true
+                    },
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            // Ajoutez plus de couleurs ici si nécessaire
+                        ],
+                        
+                        hoverOffset: 4
+                    }],
+                },
+            });
+        </script>
+    {% endblock scripts %}
+    <script type="text/javascript" src="{% static 'homepage/main.js' %}"></script>
+</body>
+
+</html>

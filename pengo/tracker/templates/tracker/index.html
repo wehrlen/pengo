@@ -1,0 +1,42 @@
+{% extends "homepage/home.html" %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tracker/card.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <h1>Liste des membres</h1>
+    {% if test %}
+        <div class="cards">
+        {% for e in test %}
+            <div class="article">
+                <a href="{% url 'tracker:detail' e.id_member %}" class="card">
+                    <img src="{{ e.avatar_member }}" class="card__image" alt="" />
+                    <div class="card__overlay">
+                    <div class="card__header"> 
+                        <!--<img class="card__thumb" src="{{ e.avatar_member }}" alt="" />-->
+                        <div class="card__header-text">
+                        <h3 class="card__title">{{ e.name_member }}</h3>   
+                        <!--{% if e.nick_member != "None" %}        
+                            <span class="card__status">{{ e.nick_member }}</span>
+                        {% endif %}-->
+                        </div>
+                    </div>        
+                    {% if e.nick_member != "None" %} 
+                        <p class="card__description">{{ e.nick_member }}</p>
+                    {% else %}
+                        <p class="card__description">en savoir plus</p>
+
+                    {% endif %}
+
+                    </div>
+                </a>      
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>No polls are available.</p>
+    {% endif %}
+{% endblock %}

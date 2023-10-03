@@ -1,0 +1,24 @@
+{% extends "homepage/home.html" %}
+{% block style %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'tracker/detail.css' %}">
+
+{% endblock %}   
+{% block content %}
+
+    <div class="parent">
+        <div class="div1">
+            <img src="{{ member.avatar_member }}" class="card__image" alt="" />    
+        </div>
+        <div class="div2">
+            <h1>{{ member.name_member }}</h1>
+            <ul>
+                {% for k in member.memberrole_set.all %}
+                    <li>{{ k.role }}</li>
+                {% endfor %}
+                    <li>{{message_count}}</li>
+            </ul> 
+        </div>
+        <div class="div3"> </div>
+    </div> 
+{% endblock %}
