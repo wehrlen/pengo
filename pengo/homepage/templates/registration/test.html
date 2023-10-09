@@ -1,36 +1,38 @@
+<!DOCTYPE html>
+
 <html>
 
-<head>
-    <title>Homepage</title>
+  <head>
+      <title>Homepage</title>
 
-    {% load static %}
-    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'homepage/style.css' %}">
-    <link rel="stylesheet" href="{% static 'login/login.css' %}">
+      {% load static %}
+      <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+      <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+          rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'homepage/style.css' %}">
+      <link rel="stylesheet" href="{% static 'login/login.css' %}">
 
-    {% block style %}
+      {% block style %}
 
-    {% endblock %}
-</head>
+      {% endblock %}
+  </head>
 
-<body>
-  <div class="login">
-      <div class="login-title">
-        <h2>Log In</h2>
-      </div>
-      <form method="post" >
-        <div class="champs">
-          {% csrf_token %}
-          {{ form.as_p }}
+  <body>
+    <div class="login">
+        <div class="login-title">
+          <h2>Log In</h2>
         </div>
-        <button type="submit">Log In</button>
-      </form>
-  </div>
+        <form method="post" >
+          <div class="champs">
+            {% csrf_token %}
+            {{ form.as_p }}
+          </div>
+          <button type="submit">Log In</button>
+        </form>
+    </div>
 
-</body>
+  </body>
 
 
 
