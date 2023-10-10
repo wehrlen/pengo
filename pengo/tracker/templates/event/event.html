@@ -5,13 +5,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/index.global.js"></script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'event/event.css' %}">
+    
 {% endblock %}
 {% block content %}
     <h1>calendrier</h1>
-    <div id='calendar'></div>
+    <div class="calendar-container">
+        <div id='calendar'></div>
+    </div>
+ 
 
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+          <h4>Informations sur l'événement</h4>
+          <div class="input-field">
+            <label for="eventTitle">Titre</label>
+            <input type="text" id="eventTitle" placeholder="Titre de l'événement">
+            
+          </div>
+          <div class="input-field">
+            <label for="eventStart">Début</label>
+            <input type="datetime-local" id="eventStart" placeholder="Date de début">
+            
+          </div>
+          <div class="input-field">
+            <label for="eventEnd">Fin</label>
+            <input type="datetime-local" id="eventEnd" placeholder="Date de fin">
+            
+          </div>
+          <a href="#" id="closeModalBtn">Fermer</a>
+          <a href="#" id="updateEventBtn" class="btn">Enregistrer</a>
+          <a href="#" id="deleteEventBtn" class="red-text">Supprimer</a>
+          
+        </div>
+    </div>
+      
+    
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{% static 'event/event.js' %}"></script>
 {% endblock scripts %}
