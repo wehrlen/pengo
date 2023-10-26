@@ -27,8 +27,9 @@ class Member(models.Model):
     avatar_member = models.CharField(max_length=255)
     banner_member =  models.CharField(max_length=255)
     joinedat_member= models.DateField()
+    status = models.CharField(max_length=20, default="Offline")
     id_guild = models.ForeignKey(Server, on_delete=models.CASCADE)
-
+    
     
 
 class Roles(models.Model):

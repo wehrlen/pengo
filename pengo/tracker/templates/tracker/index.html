@@ -1,4 +1,5 @@
 {% extends "homepage/home.html" %}
+{% load status_filters %}
 
 {% block style %}
     {% load static %}
@@ -15,21 +16,19 @@
                 <a href="{% url 'tracker:detail' e.id_member %}" class="card">
                     <img src="{{ e.avatar_member }}" class="card__image" alt="" />
                     <div class="card__overlay">
-                    <div class="card__header"> 
-                        <!--<img class="card__thumb" src="{{ e.avatar_member }}" alt="" />-->
-                        <div class="card__header-text">
-                        <h3 class="card__title">{{ e.name_member }}</h3>   
-                        <!--{% if e.nick_member != "None" %}        
-                            <span class="card__status">{{ e.nick_member }}</span>
-                        {% endif %}-->
-                        </div>
-                    </div>        
-                    {% if e.nick_member != "None" %} 
-                        <p class="card__description">{{ e.nick_member }}</p>
-                    {% else %}
-                        <p class="card__description">en savoir plus</p>
+                        <div class="card__header"> 
+                            <!--<img class="card__thumb" src="{{ e.avatar_member }}" alt="" />-->
+                            <div class="card__header-text">
+                                <h3 class="card__title">{{ e.name_member }}</h3>           
+                            </div>
+                            <span class="{{ e.status|lower }}">{{ e.status|status_label }}</span>
+                        </div>        
+                        {% if e.nick_member != "None" %} 
+                            <p class="card__description">{{ e.nick_member }}</p>
+                        {% else %}
+                            <p class="card__description">en savoir plus</p>
 
-                    {% endif %}
+                        {% endif %}
 
                     </div>
                 </a>      

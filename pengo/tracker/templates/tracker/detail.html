@@ -18,7 +18,57 @@
                 {% endfor %}
                     <li>{{message_count}}</li>
             </ul> 
+
         </div>
-        <div class="div3"> </div>
+        <div class="div3"> 
+            <h1>Nombre de messages par mois</h1>                
+            <div class="info graph">
+                <canvas id="graphiqueMessages"></canvas>  
+            </div>
+        </div>
     </div> 
 {% endblock %}
+
+{% block scripts %}
+    
+        <script>
+            var labels = JSON.parse("{{ labels|escapejs }}");
+            var data = JSON.parse("{{ data|escapejs }}");
+
+            
+            console.log(data)                    // Préparez les données pour le graphique
+
+            var ctx = document.getElementById('graphiqueMessages').getContext('2d');
+            var graphique2 = new Chart(ctx, {
+                type: 'line',
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                          min: 0,
+                          ticks:{
+                            precision: 0,
+                          }
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                          display: false,
+                        },
+  
+                    },
+                    
+                },
+                data: {
+                    labels: labels,
+                    datasets: [{
+
+                        data: data, 
+                        hoverOffset: 4
+                    }],
+                },
+            });
+
+            
+        </script>
+    {% endblock scripts %}
